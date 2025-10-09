@@ -1,7 +1,7 @@
 const productDatabase = {
     "4903301318620": {
         name: "ポカリスエット 500ml",
-        image: "https://via.placeholder.com/300x300/4A90E2/ffffff?text=ポカリスエット"
+        image: "/images/artist.jpg"
     },
     "4901777337398": {
         name: "イオン天然水 2L",
