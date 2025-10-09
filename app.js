@@ -1,5 +1,5 @@
 const productDatabase = {
-    "4901777018686": {
+    "4903301318620": {
         name: "ポカリスエット 500ml",
         image: "https://via.placeholder.com/300x300/4A90E2/ffffff?text=ポカリスエット"
     },
