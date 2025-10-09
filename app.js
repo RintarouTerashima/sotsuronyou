@@ -1,7 +1,7 @@
 const productDatabase = {
     "4903301318620": {
         name: "ポカリスエット 500ml",
-        image: "/images/artist.jpg"
+        image: "/sotsuronyou/images/artist.jpg"
     },
     "4901777337398": {
         name: "イオン天然水 2L",
@@ -71,16 +71,12 @@ function onScanFailure(error) {
 
 function startScanning() {
     const config = {
-        fps: 25,
-        qrbox: { width: 250, height: 250 },
+        fps: 35,
+        qrbox: { width: 220, height: 220 },
         aspectRatio: 1.0,
         formatsToSupport: [
             Html5QrcodeSupportedFormats.EAN_13,
-            Html5QrcodeSupportedFormats.EAN_8,
-            Html5QrcodeSupportedFormats.CODE_128,
-            Html5QrcodeSupportedFormats.CODE_39,
-            Html5QrcodeSupportedFormats.UPC_A,
-            Html5QrcodeSupportedFormats.UPC_E
+            Html5QrcodeSupportedFormats.EAN_8
         ]
     };
 
