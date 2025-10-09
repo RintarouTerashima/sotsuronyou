@@ -71,7 +71,7 @@ function onScanFailure(error) {
 
 function startScanning() {
     const config = {
-        fps: 10,
+        fps: 25,
         qrbox: { width: 250, height: 250 },
         aspectRatio: 1.0,
         formatsToSupport: [
