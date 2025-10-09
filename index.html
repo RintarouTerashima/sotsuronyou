@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>バーコードスキャン - WTP調査</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 バーコードスキャン</h1>
+            <p>商品のバーコードを読み取って、支払意思額を入力してください</p>
+        </header>
+
+        <main>
+            <section class="scanner-section">
+                <div id="reader"></div>
+                <button id="start-scan-btn" class="btn btn-primary">📷 スキャン開始</button>
+                <button id="stop-scan-btn" class="btn btn-secondary" style="display:none;">⏸️ スキャン停止</button>
+            </section>
+
+            <section class="product-section" id="product-section" style="display:none;">
+                <div class="product-info">
+                    <h2>📦 読み取り結果</h2>
+                    <div class="product-image-container">
+                        <img id="product-image" src="" alt="商品画像" class="product-image">
+                    </div>
+                    <div class="info-row">
+                        <span class="label">バーコード:</span>
+                        <span id="barcode-number" class="value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">商品名:</span>
+                        <span id="product-name" class="value"></span>
+                    </div>
+                </div>
+
+                <div class="wtp-form">
+                    <label for="wtp-input">💰 支払意思額（円）:</label>
+                    <input type="number" id="wtp-input" placeholder="金額を入力" min="0" step="1">
+                    <button id="submit-btn" class="btn btn-success">✅ 送信</button>
+                </div>
+            </section>
+
+            <section class="data-section">
+                <h3>📊 記録データ</h3>
+                <div id="record-count" class="record-count">記録件数: 0件</div>
+                <button id="download-csv-btn" class="btn btn-download" disabled>💾 CSVダウンロード</button>
+                <button id="clear-data-btn" class="btn btn-danger">🗑️ データクリア</button>
+            </section>
+
+            <section class="records-preview">
+                <h4>最新の記録</h4>
+                <div id="records-list"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>iPhone/iPad Safari対応 | GitHub Pages動作可</p>
+            <a href="barcode-wtp-app.tar.gz" download class="download-link">📦 プロジェクト全体をダウンロード</a>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

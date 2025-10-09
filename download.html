@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロジェクトダウンロード</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .icon {
+            text-align: center;
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .file-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-list li {
+            padding: 8px 0;
+            color: #555;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+
+        .file-list li::before {
+            content: "📄 ";
+            margin-right: 8px;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 30px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .icon {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📦</div>
+        <h1>バーコードスキャンWTPアプリ<br>プロジェクトダウンロード</h1>
+        
+        <p class="description">
+            このプロジェクトのすべてのファイルをダウンロードできます。GitHub Pagesや任意のWebサーバーにアップロードして使用できます。
+        </p>
+
+        <div class="file-info">
+            <h3>📁 含まれるファイル</h3>
+            <ul class="file-list">
+                <li>index.html - メインHTMLファイル</li>
+                <li>style.css - スタイルシート</li>
+                <li>app.js - JavaScript（バーコードスキャン・データ管理）</li>
+                <li>README.md - プロジェクトドキュメント</li>
+                <li>.gitignore - Git設定ファイル</li>
+            </ul>
+        </div>
+
+        <a href="/barcode-wtp-app.tar.gz" download class="download-btn">
+            💾 プロジェクトをダウンロード (tar.gz形式)
+        </a>
+
+        <a href="/index.html" class="back-btn">
+            ← アプリに戻る
+        </a>
+
+        <div class="note">
+            <strong>💡 使い方：</strong><br>
+            1. ダウンロードしたファイルを解凍<br>
+            2. GitHubリポジトリにアップロード、またはWebサーバーに配置<br>
+            3. HTTPS環境で動作させる（カメラアクセスに必要）
+        </div>
+    </div>
+</body>
+</html>
