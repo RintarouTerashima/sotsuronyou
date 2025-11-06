@@ -1,7 +1,7 @@
 const productDatabase = {
     "4903301318620": {
         name: "ポカリスエット 500ml",
-        image: "/sotsuronyou/images/artist.jpg"
+        image: "images/artist.jpg"
     },
     "4901777337398": {
         name: "イオン天然水 2L",
@@ -19,46 +19,56 @@ const productDatabase = {
 
 let html5QrcodeScanner;
 let scannedRecords = [];
-let currentBarcode = null;
-let currentProductName = null;
+let currentSessionItems = [];
+let lastScannedBarcode = null;
+let lastScanTime = 0;
+const SCAN_COOLDOWN = 2000;
 
 const startScanBtn = document.getElementById('start-scan-btn');
 const stopScanBtn = document.getElementById('stop-scan-btn');
+const finishScanBtn = document.getElementById('finish-scan-btn');
+const sessionItemsSection = document.getElementById('session-items-section');
+const sessionItemsCount = document.getElementById('session-items-count');
+const sessionItemsList = document.getElementById('session-items-list');
 const productSection = document.getElementById('product-section');
-const barcodeNumberEl = document.getElementById('barcode-number');
-const productNameEl = document.getElementById('product-name');
-const productImageEl = document.getElementById('product-image');
+const scannedProductsList = document.getElementById('scanned-products-list');
 const wtpInput = document.getElementById('wtp-input');
 const submitBtn = document.getElementById('submit-btn');
+const cancelBtn = document.getElementById('cancel-btn');
 const downloadCsvBtn = document.getElementById('download-csv-btn');
 const clearDataBtn = document.getElementById('clear-data-btn');
 const recordCountEl = document.getElementById('record-count');
-const recordsListEl = document.getElementById('records-list');
 
 function onScanSuccess(decodedText, decodedResult) {
-    console.log(`Barcode detected: ${decodedText}`);
+    const currentTime = Date.now();
     
-    currentBarcode = decodedText;
-    const productData = productDatabase[decodedText];
-    
-    if (productData) {
-        currentProductName = productData.name;
-        productImageEl.src = productData.image;
-        productImageEl.style.display = 'block';
-    } else {
-        currentProductName = "未登録商品";
-        productImageEl.src = "https://via.placeholder.com/300x300/cccccc/666666?text=未登録商品";
-        productImageEl.style.display = 'block';
+    if (lastScannedBarcode === decodedText && (currentTime - lastScanTime) < SCAN_COOLDOWN) {
+        return;
     }
     
-    barcodeNumberEl.textContent = currentBarcode;
-    productNameEl.textContent = currentProductName;
+    console.log(`Barcode detected: ${decodedText}`);
     
-    productSection.style.display = 'block';
-    wtpInput.value = '';
-    wtpInput.focus();
+    lastScannedBarcode = decodedText;
+    lastScanTime = currentTime;
     
-    stopScanning();
+    const productData = productDatabase[decodedText];
+    let productName, productImage;
+    
+    if (productData) {
+        productName = productData.name;
+        productImage = productData.image;
+    } else {
+        productName = "未登録商品";
+        productImage = "https://via.placeholder.com/300x300/cccccc/666666?text=未登録商品";
+    }
+    
+    currentSessionItems.push({
+        barcode: decodedText,
+        name: productName,
+        image: productImage
+    });
+    
+    updateSessionItemsList();
     
     if (window.navigator.vibrate) {
         window.navigator.vibrate(200);
@@ -66,10 +76,37 @@ function onScanSuccess(decodedText, decodedResult) {
 }
 
 function onScanFailure(error) {
-    console.log(`Scan error: ${error}`);
+}
+
+function updateSessionItemsList() {
+    sessionItemsCount.textContent = `${currentSessionItems.length}点`;
+    
+    if (currentSessionItems.length === 0) {
+        sessionItemsSection.style.display = 'none';
+        finishScanBtn.style.display = 'none';
+        return;
+    }
+    
+    sessionItemsSection.style.display = 'block';
+    finishScanBtn.style.display = 'inline-block';
+    
+    sessionItemsList.innerHTML = currentSessionItems.map((item, index) => `
+        <div class="session-item">
+            <img src="${item.image}" alt="${item.name}" class="session-item-image">
+            <div class="session-item-info">
+                <div class="session-item-name">${item.name}</div>
+                <div class="session-item-barcode">${item.barcode}</div>
+            </div>
+        </div>
+    `).join('');
 }
 
 function startScanning() {
+    currentSessionItems = [];
+    lastScannedBarcode = null;
+    lastScanTime = 0;
+    updateSessionItemsList();
+    
     const config = {
         fps: 35,
         qrbox: { width: 220, height: 220 },
@@ -103,10 +140,56 @@ function stopScanning() {
             console.log("Scanner stopped successfully");
             startScanBtn.style.display = 'inline-block';
             stopScanBtn.style.display = 'none';
+            finishScanBtn.style.display = 'none';
+            sessionItemsSection.style.display = 'none';
+            currentSessionItems = [];
+            lastScannedBarcode = null;
+            lastScanTime = 0;
         }).catch((err) => {
             console.error("Failed to stop scanner:", err);
         });
     }
+}
+
+function finishScanning() {
+    if (currentSessionItems.length === 0) {
+        alert('商品がスキャンされていません');
+        return;
+    }
+    
+    if (html5QrcodeScanner) {
+        html5QrcodeScanner.stop().then(() => {
+            console.log("Scanner stopped for WTP input");
+            stopScanBtn.style.display = 'none';
+            finishScanBtn.style.display = 'none';
+            sessionItemsSection.style.display = 'none';
+            showWTPInput();
+        }).catch((err) => {
+            console.error("Failed to stop scanner:", err);
+        });
+    }
+}
+
+function showWTPInput() {
+    scannedProductsList.innerHTML = currentSessionItems.map((item, index) => `
+        <div class="scanned-product-item">
+            <img src="${item.image}" alt="${item.name}" class="scanned-product-image">
+            <div class="scanned-product-info">
+                <div class="scanned-product-name">${item.name}</div>
+                <div class="scanned-product-barcode">${item.barcode}</div>
+            </div>
+        </div>
+    `).join('');
+    
+    productSection.style.display = 'block';
+    wtpInput.value = '';
+    wtpInput.focus();
+}
+
+function cancelWTPInput() {
+    productSection.style.display = 'none';
+    currentSessionItems = [];
+    startScanBtn.style.display = 'inline-block';
 }
 
 function submitWTP() {
@@ -114,6 +197,11 @@ function submitWTP() {
     
     if (!wtpValue || parseFloat(wtpValue) < 0) {
         alert('有効な金額を入力してください');
+        return;
+    }
+    
+    if (currentSessionItems.length === 0) {
+        alert('スキャンした商品がありません');
         return;
     }
     
@@ -126,10 +214,15 @@ function submitWTP() {
         second: '2-digit'
     });
     
+    const barcodes = currentSessionItems.map(item => item.barcode).join('|');
+    const productNames = currentSessionItems.map(item => item.name).join('|');
+    const itemCount = currentSessionItems.length;
+    
     const record = {
         timestamp: timestamp,
-        barcode: currentBarcode,
-        productName: currentProductName,
+        barcode: barcodes,
+        productName: productNames,
+        itemCount: itemCount,
         wtp: parseFloat(wtpValue)
     };
     
@@ -139,9 +232,9 @@ function submitWTP() {
     updateRecordDisplay();
     
     productSection.style.display = 'none';
-    currentBarcode = null;
-    currentProductName = null;
+    currentSessionItems = [];
     wtpInput.value = '';
+    startScanBtn.style.display = 'inline-block';
     
     alert('記録しました！');
 }
@@ -162,22 +255,6 @@ function updateRecordDisplay() {
     recordCountEl.textContent = `記録件数: ${scannedRecords.length}件`;
     
     downloadCsvBtn.disabled = scannedRecords.length === 0;
-    
-    if (scannedRecords.length === 0) {
-        recordsListEl.innerHTML = '<div class="empty-state">まだ記録がありません</div>';
-        return;
-    }
-    
-    const recentRecords = scannedRecords.slice(-5).reverse();
-    
-    recordsListEl.innerHTML = recentRecords.map(record => `
-        <div class="record-item">
-            <div class="record-time">${record.timestamp}</div>
-            <div class="record-details">
-                ${record.productName} (${record.barcode}) - ¥${record.wtp}
-            </div>
-        </div>
-    `).join('');
 }
 
 function downloadCSV() {
@@ -186,12 +263,13 @@ function downloadCSV() {
         return;
     }
     
-    const headers = ['タイムスタンプ', 'バーコード番号', '商品名', 'WTP金額'];
+    const headers = ['タイムスタンプ', '商品数', 'バーコード番号', '商品名', 'WTP金額'];
     const csvContent = [
         headers.join(','),
-        ...scannedRecords.map(record => 
-            `"${record.timestamp}","${record.barcode}","${record.productName}",${record.wtp}`
-        )
+        ...scannedRecords.map(record => {
+            const itemCount = record.itemCount || 1;
+            return `"${record.timestamp}",${itemCount},"${record.barcode}","${record.productName}",${record.wtp}`;
+        })
     ].join('\n');
     
     const bom = '\uFEFF';
@@ -228,7 +306,9 @@ function clearData() {
 
 startScanBtn.addEventListener('click', startScanning);
 stopScanBtn.addEventListener('click', stopScanning);
+finishScanBtn.addEventListener('click', finishScanning);
 submitBtn.addEventListener('click', submitWTP);
+cancelBtn.addEventListener('click', cancelWTPInput);
 downloadCsvBtn.addEventListener('click', downloadCSV);
 clearDataBtn.addEventListener('click', clearData);
 

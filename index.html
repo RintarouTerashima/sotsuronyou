@@ -20,28 +20,27 @@
                 <div id="reader"></div>
                 <button id="start-scan-btn" class="btn btn-primary">📷 スキャン開始</button>
                 <button id="stop-scan-btn" class="btn btn-secondary" style="display:none;">⏸️ スキャン停止</button>
+                <button id="finish-scan-btn" class="btn btn-finish" style="display:none;">✅ スキャン終了</button>
+                
+                <div id="session-items-section" style="display:none;">
+                    <h3>🛒 スキャンした商品</h3>
+                    <div id="session-items-count" class="session-count">0点</div>
+                    <div id="session-items-list"></div>
+                </div>
             </section>
 
             <section class="product-section" id="product-section" style="display:none;">
                 <div class="product-info">
-                    <h2>📦 読み取り結果</h2>
-                    <div class="product-image-container">
-                        <img id="product-image" src="" alt="商品画像" class="product-image">
-                    </div>
-                    <div class="info-row">
-                        <span class="label">バーコード:</span>
-                        <span id="barcode-number" class="value"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">商品名:</span>
-                        <span id="product-name" class="value"></span>
-                    </div>
+                    <h2>💰 支払意思額の入力</h2>
+                    <p class="session-summary">スキャンした商品の合計金額を入力してください</p>
+                    <div id="scanned-products-list"></div>
                 </div>
 
                 <div class="wtp-form">
-                    <label for="wtp-input">💰 支払意思額（円）:</label>
+                    <label for="wtp-input">💰 合計支払意思額（円）:</label>
                     <input type="number" id="wtp-input" placeholder="金額を入力" min="0" step="1">
                     <button id="submit-btn" class="btn btn-success">✅ 送信</button>
+                    <button id="cancel-btn" class="btn btn-secondary">❌ キャンセル</button>
                 </div>
             </section>
 

@@ -47,6 +47,73 @@ main {
     text-align: center;
 }
 
+#session-items-section {
+    margin-top: 25px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+#session-items-section h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: left;
+}
+
+.session-count {
+    font-size: 16px;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+#session-items-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.session-item {
+    background: white;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.session-item:last-child {
+    margin-bottom: 0;
+}
+
+.session-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.session-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.session-item-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.session-item-barcode {
+    font-size: 12px;
+    color: #6c757d;
+}
+
 #reader {
     width: 100%;
     max-width: 500px;
@@ -120,6 +187,17 @@ main {
     background: #c82333;
 }
 
+.btn-finish {
+    background: #28a745;
+    color: white;
+}
+
+.btn-finish:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.4);
+}
+
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -140,6 +218,57 @@ main {
     color: #333;
     margin-bottom: 15px;
     font-size: 20px;
+}
+
+.session-summary {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+#scanned-products-list {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.scanned-product-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.scanned-product-item:last-child {
+    border-bottom: none;
+}
+
+.scanned-product-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.scanned-product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.scanned-product-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.scanned-product-barcode {
+    font-size: 12px;
+    color: #6c757d;
 }
 
 .product-image-container {
